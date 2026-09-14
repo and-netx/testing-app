@@ -1,1 +1,250 @@
-404: Not Found
+# Semilla de modelos del gateway LLM
+# ==================================================================
+# Este archivo es el ORIGEN DE MODELOS: cada instalacion del gateway lo
+# baja desde aca y con eso arma su cantera de candidatos.
+#   URL: https://raw.githubusercontent.com/and-netx/testing-app/main/modelos.yaml
+# Actualizarlo = todos los gateways al dia (sin tocar ninguna maquina).
+#
+# REGLAS
+#  - NO lleva claves: solo el NOMBRE de la variable de entorno (api_key_env).
+#  - ventana_tokens   = cuantos tokens de ENTRADA acepta el modelo (su contexto).
+#  - apto_hasta_tokens = hasta cuantos tokens le mandamos nosotros (< ventana).
+#  - Un modelo que no este aca no se ofrece; uno que este, igual tiene que
+#    andar en la maquina del cliente: la verdad la fija su medicion local.
+#
+# CAMPOS por modelo: name, proveedor, model, ventana_tokens, apto_hasta_tokens,
+#                    timeout_s, latencia_s (medida), verificado_ts
+# ==================================================================
+
+semilla: 1
+actualizado: 2026-09-10 18:53
+barrido: 79 modelos probados, 27 utiles
+
+proveedores:
+  groq:
+    base_url: https://api.groq.com/openai/v1
+    api_key_env: GROQ_API_KEY
+  openrouter:
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
+  bai:
+    base_url: https://api.b.ai/v1
+    api_key_env: BAI_API_KEY
+
+modelos:
+  - name: groq-qwen-qwen3-8-27b
+    proveedor: groq
+    model: qwen/qwen3.8-27b
+    ventana_tokens: 131042
+    apto_hasta_tokens: 117937
+    timeout_s: 6
+    latencia_s: 0.4
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-openai-gpt-oss-20b
+    proveedor: groq
+    model: openai/gpt-oss-20b
+    ventana_tokens: 131072
+    apto_hasta_tokens: 117964
+    timeout_s: 6
+    latencia_s: 0.5
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-openai-gpt-oss-120b
+    proveedor: groq
+    model: openai/gpt-oss-120b
+    ventana_tokens: 131072
+    apto_hasta_tokens: 117964
+    timeout_s: 6
+    latencia_s: 0.5
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-allam-2-7b
+    proveedor: groq
+    model: allam-2-7b
+    ventana_tokens: 4096
+    apto_hasta_tokens: 3096
+    timeout_s: 6
+    latencia_s: 0.5
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-cohere-north-mini-code-free
+    proveedor: openrouter
+    model: cohere/north-mini-code:free
+    ventana_tokens: 256000
+    apto_hasta_tokens: 230400
+    timeout_s: 6
+    latencia_s: 0.6
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nvidia-nemotron-3-5-content-safety-free
+    proveedor: openrouter
+    model: nvidia/nemotron-3.5-content-safety:free
+    ventana_tokens: 128000
+    apto_hasta_tokens: 115200
+    timeout_s: 6
+    latencia_s: 0.6
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nvidia-nemotron-3-5-lightning-free
+    proveedor: openrouter
+    model: nvidia/nemotron-3.5-lightning:free
+    ventana_tokens: 1000000
+    apto_hasta_tokens: 900000
+    timeout_s: 6
+    latencia_s: 0.7
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nvidia-nemotron-3-super-120b-a12b-free
+    proveedor: openrouter
+    model: nvidia/nemotron-3-super-120b-a12b:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 0.7
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-openrouter-free
+    proveedor: openrouter
+    model: openrouter/free
+    ventana_tokens: 200000
+    apto_hasta_tokens: 180000
+    timeout_s: 6
+    latencia_s: 0.7
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-qwen-qwen3-6-27b
+    proveedor: groq
+    model: qwen/qwen3.6-27b
+    ventana_tokens: 131072
+    apto_hasta_tokens: 117964
+    timeout_s: 6
+    latencia_s: 0.7
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-groq-compound
+    proveedor: groq
+    model: groq/compound
+    ventana_tokens: 131072
+    apto_hasta_tokens: 117964
+    timeout_s: 6
+    latencia_s: 0.8
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free
+    proveedor: openrouter
+    model: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+    ventana_tokens: 256000
+    apto_hasta_tokens: 230400
+    timeout_s: 6
+    latencia_s: 0.9
+    verificado_ts: '2026-09-10 18:53'
+  - name: groq-groq-compound-mini
+    proveedor: groq
+    model: groq/compound-mini
+    ventana_tokens: 131072
+    apto_hasta_tokens: 117964
+    timeout_s: 6
+    latencia_s: 0.9
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-inclusionai-ling-3-0-flash-fin-free
+    proveedor: openrouter
+    model: inclusionai/ling-3.0-flash-fin:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 1.1
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-inclusionai-ling-3-0-flash-vl-free
+    proveedor: openrouter
+    model: inclusionai/ling-3.0-flash-vl:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 1.2
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-google-lyria-3-pro-preview
+    proveedor: openrouter
+    model: google/lyria-3-pro-preview
+    ventana_tokens: 1048576
+    apto_hasta_tokens: 943718
+    timeout_s: 6
+    latencia_s: 1.2
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-poolside-laguna-s-2-1-free
+    proveedor: openrouter
+    model: poolside/laguna-s-2.1:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 1.3
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-inclusionai-ling-3-0-flash-sante-free
+    proveedor: openrouter
+    model: inclusionai/ling-3.0-flash-sante:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 1.4
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nex-agi-nex-n2-5-mini-free
+    proveedor: openrouter
+    model: nex-agi/nex-n2.5-mini:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 2.1
+    verificado_ts: '2026-09-10 18:53'
+  - name: bai-glm-5-3-flash
+    proveedor: bai
+    model: glm-5.3-flash
+    ventana_tokens: 128000
+    apto_hasta_tokens: 115200
+    timeout_s: 6
+    latencia_s: 2.4
+    verificado_ts: '2026-09-10 18:53'
+  - name: bai-qwen3-8-flash
+    proveedor: bai
+    model: qwen3.8-flash
+    ventana_tokens: 128000
+    apto_hasta_tokens: 115200
+    timeout_s: 6
+    latencia_s: 2.4
+    verificado_ts: '2026-09-10 18:53'
+  - name: bai-hy3
+    proveedor: bai
+    model: hy3
+    ventana_tokens: 128000
+    apto_hasta_tokens: 115200
+    timeout_s: 6
+    latencia_s: 2.5
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-dots-studio-dots-3-note-preview-free
+    proveedor: openrouter
+    model: dots-studio/dots-3-note-preview:free
+    ventana_tokens: 512000
+    apto_hasta_tokens: 460800
+    timeout_s: 6
+    latencia_s: 2.9
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-liquid-lfm-2-5-2-6b-free
+    proveedor: openrouter
+    model: liquid/lfm-2.5-2.6b:free
+    ventana_tokens: 65536
+    apto_hasta_tokens: 58982
+    timeout_s: 6
+    latencia_s: 3.2
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nex-agi-nex-n2-5-pro-free
+    proveedor: openrouter
+    model: nex-agi/nex-n2.5-pro:free
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 4.5
+    verificado_ts: '2026-09-10 18:53'
+  - name: openrouter-nvidia-nemotron-3-ultra-550b-a55b-free
+    proveedor: openrouter
+    model: nvidia/nemotron-3-ultra-550b-a55b:free
+    ventana_tokens: 1000000
+    apto_hasta_tokens: 900000
+    timeout_s: 6
+    latencia_s: 21.0
+    verificado_ts: '2026-09-10 18:53'
+  - name: bai-mimo-v2-5
+    proveedor: bai
+    model: mimo-v2.5
+    ventana_tokens: 128000
+    apto_hasta_tokens: 115200
+    timeout_s: 6
+    latencia_s: 22.1
+    verificado_ts: '2026-09-10 18:53'
