@@ -1,0 +1,95 @@
+# Historico del catalogo de modelos del gateway LLM
+# ==================================================================
+# El registro que CRECE: cada alta, cada baja y cada descarte, con su motivo,
+# su fecha y si puede volver. NO lo baja el gateway (para eso esta modelos.yaml):
+# esto es para el mantenimiento del catalogo -- que el barrido recuerde entre
+# corridas y no gaste cuota re-probando lo que ya se sabe.
+#
+# CAMPOS de un evento: ts, tipo (alta|baja|descartado), name/proveedor/model,
+#   motivo, reintentable (true|false) y reintentar_en (fecha) si aplica.
+# REGLA: `reintentable: true` = volver a probarlo en esa fecha, no antes.
+#        un 429 (saturado) no es lo mismo que un 404 (no existe).
+# ==================================================================
+
+historico: 1
+actualizado: 2026-09-15
+
+resumen:
+  vivos: 28
+  bajas: 2
+  descartados: 4
+  nota: >-
+    El historico arranca el 15/09/26 con lo que se sabe de las corridas previas.
+    De aca en adelante, cada barrido agrega los eventos del dia.
+
+eventos:
+  # --- origen ---
+  - ts: '2026-09-10 18:53'
+    tipo: alta
+    nota: >-
+      Primer barrido: 79 modelos probados con una llamada real; 27 quedaron vivos
+      y son el origen de este catalogo.
+  # --- revision 15/09 ---
+  - ts: '2026-09-15 10:11'
+    tipo: alta
+    name: openrouter-google-gemma-4-26b-a4b-it-free
+    proveedor: openrouter
+    model: google/gemma-4-26b-a4b-it:free
+    motivo: 'Revision con llamada real: responde y acepta tools y vision'
+    reintentable: false
+  # --- revision 15/09 ---
+  - ts: '2026-09-15 10:11'
+    tipo: alta
+    name: openrouter-google-gemma-4-31b-it-free
+    proveedor: openrouter
+    model: google/gemma-4-31b-it:free
+    motivo: 'Revision con llamada real: responde y acepta tools y vision'
+    reintentable: false
+  # --- bajas (no se ofrecen mas) ---
+  - ts: 2026-09-15 10:11
+...
+    tipo: baja
+    name: groq-qwen-qwen3-6-27b
+    proveedor: groq
+    model: qwen/qwen3.6-27b
+    motivo: 'HTTP 404 ''The model qwen/qwen3.6-27b does not exist or you do not have access'': Groq lo saco de su catalogo'
+    reintentable: false
+  - ts: 2026-09-15 10:11
+...
+    tipo: baja
+    name: bai-glm-5-3-flash
+    proveedor: bai
+    model: glm-5.3-flash
+    motivo: 'HTTP 400 ''credit insufficient balance: balance=0 required=102'' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0'
+    reintentable: false
+  # --- descartados (probados y no entran) ---
+  - ts: '2026-09-15 10:11'
+    tipo: descartado
+    proveedor: openrouter
+    model: z-ai/glm-5.2:free
+    motivo: '429 sostenido (dos intentos con 20s de pausa): el endpoint free esta saturado'
+    reintentable: true
+    reintentar_en: '2026-09-22'
+    nota: 'saturado: puede volver solo'
+  - ts: '2026-09-15 10:11'
+    tipo: descartado
+    proveedor: openrouter
+    model: poolside/laguna-xs-2.1:free
+    motivo: '429 sostenido (dos intentos): saturado'
+    reintentable: true
+    reintentar_en: '2026-09-22'
+    nota: 'saturado: puede volver solo'
+  - ts: '2026-09-15 10:11'
+    tipo: descartado
+    proveedor: openrouter
+    model: thinkingmachines/inkling:free
+    motivo: '403 ''is only available on ...'': acceso restringido, aunque el catalogo declare 1M de contexto y audio/imagen (igual su hermano inkling-small)'
+    reintentable: true
+    reintentar_en: '2026-10-15'
+    nota: 'acceso restringido: puede abrirse'
+  - ts: '2026-09-15 10:11'
+    tipo: descartado
+    proveedor: openrouter
+    model: google/lyria-3-clip-preview
+    motivo: '502 del proveedor: es de musica, no de chat. No sirve como escalon'
+    reintentable: false
