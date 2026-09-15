@@ -33,25 +33,26 @@
 # ==================================================================
 
 semilla: 1
-actualizado: 2026-09-10 18:53
-barrido: '79 modelos probados, 27 utiles (+ deepseek-flash, agregado a mano: es el unico pago)'
+actualizado: 2026-09-15 10:11
+barrido: '79 modelos probados el 10/09, 27 utiles (+ deepseek-flash, agregado a mano: es el unico pago)'
+ultima_revision: "2026-09-15: 27 modelos de la semilla y 7 candidatos nuevos probados con una llamada real cada uno -> 2 altas (gemma-4 26b y 31b), 2 bajas (groq qwen3.6-27b, bai glm-5.3-flash), 2 lentisimos (nemotron lightning/ultra) y 4 candidatos descartados (ver 'descartados')"
 costos_verificados: 2026-09-14
-capacidades_verificadas: 2026-09-14
+capacidades_verificadas: 2026-09-15 (revision de altas y bajas)
 
 # De donde salio cada precio (lo que DECLARA el proveedor).
 fuentes_costo:
-  groq: "tier free de Groq (https://api.groq.com/openai/v1): los 7 listados son de la capa gratis"
-  openrouter: "catalogo publico (https://openrouter.ai/api/v1/models): los 16 ids listados informan in=0 out=0"
-  bai: "https://api.b.ai/ no publica tarifas (401 en /v1/models, 403 en /pricing): SIN VERIFICAR"
-  deepseek: "https://api-docs.deepseek.com/quick_start/pricing"
+  groq: 'tier free de Groq (https://api.groq.com/openai/v1): los 7 listados son de la capa gratis'
+  openrouter: 'catalogo publico (https://openrouter.ai/api/v1/models): los 16 ids listados informan in=0 out=0'
+  bai: 'https://api.b.ai/ no publica tarifas (401 en /v1/models, 403 en /pricing): SIN VERIFICAR'
+  deepseek: 'https://api-docs.deepseek.com/quick_start/pricing'
 
 # De donde salieron tools / vision.
 fuentes_capacidades:
-  groq: "ficha de cada modelo en https://console.groq.com/docs/model/<id> (campo CAPABILITIES)"
-  openrouter: "catalogo publico https://openrouter.ai/api/v1/models (supported_parameters trae 'tools'; architecture.input_modalities trae 'image')"
-  deepseek: "https://api-docs.deepseek.com/quick_start/pricing (Tool Calls y Vision marcados)"
-  bai: "sin datos publicos: tools/vision quedan en null"
-  groq/compound: "la ficha del modelo devuelve 404: es un sistema agentico con herramientas del lado de Groq, no se pudo verificar que acepte tools del cliente"
+  groq: 'ficha de cada modelo en https://console.groq.com/docs/model/<id> (campo CAPABILITIES)'
+  openrouter: 'catalogo publico https://openrouter.ai/api/v1/models (supported_parameters trae ''tools''; architecture.input_modalities trae ''image'')'
+  deepseek: 'https://api-docs.deepseek.com/quick_start/pricing (Tool Calls y Vision marcados)'
+  bai: 'sin datos publicos: tools/vision quedan en null'
+  groq/compound: 'la ficha del modelo devuelve 404: es un sistema agentico con herramientas del lado de Groq, no se pudo verificar que acepte tools del cliente'
 
 proveedores:
   groq:
@@ -66,6 +67,38 @@ proveedores:
   deepseek:
     base_url: https://api.deepseek.com/v1
     api_key_env: DEEPSEEK_API_KEY
+
+# Bajas: modelos que se cayeron. NO se ofrecen. Se guardan con motivo y fecha para no repetir el error.
+bajas:
+  - name: groq-qwen-qwen3-6-27b
+    proveedor: groq
+    model: qwen/qwen3.6-27b
+    baja_ts: '2026-09-15 10:11'
+    motivo: 'HTTP 404 ''The model qwen/qwen3.6-27b does not exist or you do not have access'': Groq lo saco de su catalogo'
+
+  - name: bai-glm-5-3-flash
+    proveedor: bai
+    model: glm-5.3-flash
+    baja_ts: '2026-09-15 10:11'
+    motivo: 'HTTP 400 ''credit insufficient balance: balance=0 required=102'' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0'
+
+# Descartados: candidatos nuevos que NO entran a la semilla, con el motivo de la verificacion.
+descartados:
+  - model: 'z-ai/glm-5.2:free'
+    proveedor: openrouter
+    motivo: '429 sostenido (dos intentos con 20s de pausa): el endpoint free esta saturado'
+
+  - model: 'poolside/laguna-xs-2.1:free'
+    proveedor: openrouter
+    motivo: '429 sostenido (dos intentos): saturado'
+
+  - model: 'thinkingmachines/inkling:free'
+    proveedor: openrouter
+    motivo: '403 ''is only available on ...'': acceso restringido, aunque el catalogo declare 1M de contexto y audio/imagen (igual su hermano inkling-small)'
+
+  - model: google/lyria-3-clip-preview
+    proveedor: openrouter
+    motivo: '502 del proveedor: es de musica, no de chat. No sirve como escalon'
 
 modelos:
   - name: groq-qwen-qwen3-8-27b
@@ -160,11 +193,12 @@ modelos:
     ventana_tokens: 1000000
     apto_hasta_tokens: 900000
     timeout_s: 6
-    latencia_s: 0.7
-    verificado_ts: '2026-09-10 18:53'
+    latencia_s: 85.1
+    verificado_ts: '2026-09-15 10:11'
     costo_estado: gratis
     costo_in_millon: 0.0
     costo_out_millon: 0.0
+    notas: 'revision 15/09/26: tarda ~85s porque razona antes de contestar (thinking). Responde, pero no sirve como escalon interactivo ni con timeout corto.'
 
   - name: openrouter-nvidia-nemotron-3-super-120b-a12b-free
     proveedor: openrouter
@@ -187,20 +221,6 @@ modelos:
     vision: true
     ventana_tokens: 200000
     apto_hasta_tokens: 180000
-    timeout_s: 6
-    latencia_s: 0.7
-    verificado_ts: '2026-09-10 18:53'
-    costo_estado: gratis
-    costo_in_millon: 0.0
-    costo_out_millon: 0.0
-
-  - name: groq-qwen-qwen3-6-27b
-    proveedor: groq
-    model: qwen/qwen3.6-27b
-    tools: true
-    vision: true
-    ventana_tokens: 131072
-    apto_hasta_tokens: 117964
     timeout_s: 6
     latencia_s: 0.7
     verificado_ts: '2026-09-10 18:53'
@@ -300,11 +320,12 @@ modelos:
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
-    latencia_s: 1.3
-    verificado_ts: '2026-09-10 18:53'
+    latencia_s: 0.9
+    verificado_ts: '2026-09-15 10:11'
     costo_estado: gratis
     costo_in_millon: 0.0
     costo_out_millon: 0.0
+    notas: 'revision 15/09/26: da 429 en el primer intento y OK 0.9s al reintentar: el endpoint free se satura por momentos.'
 
   - name: openrouter-inclusionai-ling-3-0-flash-sante-free
     proveedor: openrouter
@@ -333,20 +354,6 @@ modelos:
     costo_estado: gratis
     costo_in_millon: 0.0
     costo_out_millon: 0.0
-
-  - name: bai-glm-5-3-flash
-    proveedor: bai
-    model: glm-5.3-flash
-    tools: null
-    vision: null
-    ventana_tokens: 128000
-    apto_hasta_tokens: 115200
-    timeout_s: 6
-    latencia_s: 2.4
-    verificado_ts: '2026-09-10 18:53'
-    costo_estado: desconocido
-    costo_in_millon: null
-    costo_out_millon: null
 
   - name: bai-qwen3-8-flash
     proveedor: bai
@@ -398,11 +405,12 @@ modelos:
     ventana_tokens: 65536
     apto_hasta_tokens: 58982
     timeout_s: 6
-    latencia_s: 3.2
-    verificado_ts: '2026-09-10 18:53'
+    latencia_s: 1.7
+    verificado_ts: '2026-09-15 10:11'
     costo_estado: gratis
     costo_in_millon: 0.0
     costo_out_millon: 0.0
+    notas: 'revision 15/09/26: 429 en el primer intento y OK 1.7s al reintentar: saturacion pasajera.'
 
   - name: openrouter-nex-agi-nex-n2-5-pro-free
     proveedor: openrouter
@@ -426,11 +434,12 @@ modelos:
     ventana_tokens: 1000000
     apto_hasta_tokens: 900000
     timeout_s: 6
-    latencia_s: 21.0
-    verificado_ts: '2026-09-10 18:53'
+    latencia_s: 104.6
+    verificado_ts: '2026-09-15 10:11'
     costo_estado: gratis
     costo_in_millon: 0.0
     costo_out_millon: 0.0
+    notas: 'revision 15/09/26: ~105s pensando antes de responder (thinking). Responde, pero es lentisimo para un escalon.'
 
   - name: bai-mimo-v2-5
     proveedor: bai
@@ -466,3 +475,33 @@ modelos:
     horario_pico: '01:00-04:00 y 06:00-10:00 UTC, lunes a viernes; el resto es valle (el valle es la mitad del pico)'
     fuente_costo: 'https://api-docs.deepseek.com/quick_start/pricing'
     notas: 'deepseek-v4-flash quedo retirado: el id que vale es deepseek-flash (lo sirve DeepSeek-V4.1-Flash a precio Flash). Contexto 1M, salida maxima 384K, vision y thinking por defecto. latencia_s sin medir: no paso por el barrido.'
+
+  - name: openrouter-google-gemma-4-26b-a4b-it-free
+    proveedor: openrouter
+    model: 'google/gemma-4-26b-a4b-it:free'
+    tools: true
+    vision: true
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 2.7
+    verificado_ts: '2026-09-15 10:11'
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    notas: 'alta 15/09/26 tras el barrido: responde OK en 2.7s, 262K de contexto, tools y entrada de imagen y video.'
+
+  - name: openrouter-google-gemma-4-31b-it-free
+    proveedor: openrouter
+    model: 'google/gemma-4-31b-it:free'
+    tools: true
+    vision: true
+    ventana_tokens: 262144
+    apto_hasta_tokens: 235929
+    timeout_s: 6
+    latencia_s: 1.9
+    verificado_ts: '2026-09-15 10:11'
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    notas: 'alta 15/09/26 tras el barrido: responde OK en 1.9s, 262K de contexto, tools y entrada de imagen y video.'
