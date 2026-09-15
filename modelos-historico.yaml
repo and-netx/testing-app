@@ -46,50 +46,48 @@ eventos:
     motivo: 'Revision con llamada real: responde y acepta tools y vision'
     reintentable: false
   # --- bajas (no se ofrecen mas) ---
-  - ts: 2026-09-15 10:11
-...
+  - ts: "2026-09-15 10:11"
     tipo: baja
     name: groq-qwen-qwen3-6-27b
     proveedor: groq
     model: qwen/qwen3.6-27b
-    motivo: 'HTTP 404 ''The model qwen/qwen3.6-27b does not exist or you do not have access'': Groq lo saco de su catalogo'
+    motivo: "HTTP 404 'The model qwen/qwen3.6-27b does not exist or you do not have access': Groq lo saco de su catalogo"
     reintentable: false
-  - ts: 2026-09-15 10:11
-...
+  - ts: "2026-09-15 10:11"
     tipo: baja
     name: bai-glm-5-3-flash
     proveedor: bai
     model: glm-5.3-flash
-    motivo: 'HTTP 400 ''credit insufficient balance: balance=0 required=102'' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0'
+    motivo: "HTTP 400 'credit insufficient balance: balance=0 required=102' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0"
     reintentable: false
   # --- descartados (probados y no entran) ---
   - ts: '2026-09-15 10:11'
     tipo: descartado
     proveedor: openrouter
     model: z-ai/glm-5.2:free
-    motivo: '429 sostenido (dos intentos con 20s de pausa): el endpoint free esta saturado'
+    motivo: "429 sostenido (dos intentos con 20s de pausa): el endpoint free esta saturado"
     reintentable: true
     reintentar_en: '2026-09-22'
-    nota: 'saturado: puede volver solo'
+    nota: "saturado: puede volver solo"
   - ts: '2026-09-15 10:11'
     tipo: descartado
     proveedor: openrouter
     model: poolside/laguna-xs-2.1:free
-    motivo: '429 sostenido (dos intentos): saturado'
+    motivo: "429 sostenido (dos intentos): saturado"
     reintentable: true
     reintentar_en: '2026-09-22'
-    nota: 'saturado: puede volver solo'
+    nota: "saturado: puede volver solo"
   - ts: '2026-09-15 10:11'
     tipo: descartado
     proveedor: openrouter
     model: thinkingmachines/inkling:free
-    motivo: '403 ''is only available on ...'': acceso restringido, aunque el catalogo declare 1M de contexto y audio/imagen (igual su hermano inkling-small)'
+    motivo: "403 'is only available on ...': acceso restringido, aunque el catalogo declare 1M de contexto y audio/imagen (igual su hermano inkling-small)"
     reintentable: true
     reintentar_en: '2026-10-15'
-    nota: 'acceso restringido: puede abrirse'
+    nota: "acceso restringido: puede abrirse"
   - ts: '2026-09-15 10:11'
     tipo: descartado
     proveedor: openrouter
     model: google/lyria-3-clip-preview
-    motivo: '502 del proveedor: es de musica, no de chat. No sirve como escalon'
+    motivo: "502 del proveedor: es de musica, no de chat. No sirve como escalon"
     reintentable: false

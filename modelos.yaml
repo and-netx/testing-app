@@ -26,30 +26,25 @@
 
 semilla: 1
 actualizado: 2026-09-15 10:11
-barrido: '79 modelos probados el 10/09, 27 utiles (+ deepseek-flash, agregado a mano: es el unico pago)'
-ultima_revision: '2026-09-15: 27 modelos de la semilla y 7 candidatos nuevos probados con una llamada real cada uno -> 2 altas (gemma-4 26b y 31b), 2 bajas (groq qwen3.6-27b, bai glm-5.3-flash), 2 lentisimos (nemotron lightning/ultra) y 4 candidatos descartados (ver ''descartados'')'
+barrido: "79 modelos probados el 10/09, 27 utiles (+ deepseek-flash, agregado a mano: es el unico pago)"
+ultima_revision: "2026-09-15: 27 modelos de la semilla y 7 candidatos nuevos probados con una llamada real cada uno -> 2 altas (gemma-4 26b y 31b), 2 bajas (groq qwen3.6-27b, bai glm-5.3-flash), 2 lentisimos (nemotron lightning/ultra) y 4 candidatos descartados (ver 'descartados')"
 costos_verificados: 2026-09-14
-capacidades_verificadas: 2026-09-15 (revision de altas y bajas)
-...
+capacidades_verificadas: "2026-09-15 (revision de altas y bajas)"
 
 # De donde salio cada precio (lo que DECLARA el proveedor).
 fuentes_costo:
-  groq: 'tier free de Groq (https://api.groq.com/openai/v1): los 7 listados son de la capa gratis'
-  openrouter: 'catalogo publico (https://openrouter.ai/api/v1/models): los 16 ids listados informan in=0 out=0'
-  bai: 'https://api.b.ai/ no publica tarifas (401 en /v1/models, 403 en /pricing): SIN VERIFICAR'
-  deepseek: https://api-docs.deepseek.com/quick_start/pricing
-...
+  groq: "tier free de Groq (https://api.groq.com/openai/v1): los 7 listados son de la capa gratis"
+  openrouter: "catalogo publico (https://openrouter.ai/api/v1/models): los 16 ids listados informan in=0 out=0"
+  bai: "https://api.b.ai/ no publica tarifas (401 en /v1/models, 403 en /pricing): SIN VERIFICAR"
+  deepseek: "https://api-docs.deepseek.com/quick_start/pricing"
 
 # De donde salieron tools / vision.
 fuentes_capacidades:
-  groq: ficha de cada modelo en https://console.groq.com/docs/model/<id> (campo CAPABILITIES)
-...
-  openrouter: catalogo publico https://openrouter.ai/api/v1/models (supported_parameters trae 'tools'; architecture.input_modalities trae 'image')
-...
-  deepseek: https://api-docs.deepseek.com/quick_start/pricing (Tool Calls y Vision marcados)
-...
-  bai: 'sin datos publicos: tools/vision quedan en null'
-  groq/compound: 'la ficha del modelo devuelve 404: es un sistema agentico con herramientas del lado de Groq, no se pudo verificar que acepte tools del cliente'
+  groq: "ficha de cada modelo en https://console.groq.com/docs/model/<id> (campo CAPABILITIES)"
+  openrouter: "catalogo publico https://openrouter.ai/api/v1/models (supported_parameters trae 'tools'; architecture.input_modalities trae 'image')"
+  deepseek: "https://api-docs.deepseek.com/quick_start/pricing (Tool Calls y Vision marcados)"
+  bai: "sin datos publicos: tools/vision quedan en null"
+  groq/compound: "la ficha del modelo devuelve 404: es un sistema agentico con herramientas del lado de Groq, no se pudo verificar que acepte tools del cliente"
 
 proveedores:
   groq:
@@ -70,16 +65,14 @@ no_usar:
   - name: groq-qwen-qwen3-6-27b
     proveedor: groq
     model: qwen/qwen3.6-27b
-    ts: 2026-09-15 10:11
-...
-    motivo: 'HTTP 404 ''The model qwen/qwen3.6-27b does not exist or you do not have access'': Groq lo saco de su catalogo'
+    ts: "2026-09-15 10:11"
+    motivo: "HTTP 404 'The model qwen/qwen3.6-27b does not exist or you do not have access': Groq lo saco de su catalogo"
     reintentable: false
   - name: bai-glm-5-3-flash
     proveedor: bai
     model: glm-5.3-flash
-    ts: 2026-09-15 10:11
-...
-    motivo: 'HTTP 400 ''credit insufficient balance: balance=0 required=102'' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0'
+    ts: "2026-09-15 10:11"
+    motivo: "HTTP 400 'credit insufficient balance: balance=0 required=102' con la key del GATEWAY: no es gratis, exige saldo. Los otros 3 de bai si responden a costo 0"
     reintentable: false
 
 modelos:
@@ -92,10 +85,8 @@ modelos:
     apto_hasta_tokens: 117937
     timeout_s: 6
     latencia_s: 0.4
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: groq-openai-gpt-oss-20b
@@ -107,10 +98,8 @@ modelos:
     apto_hasta_tokens: 117964
     timeout_s: 6
     latencia_s: 0.5
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: groq-openai-gpt-oss-120b
@@ -122,10 +111,8 @@ modelos:
     apto_hasta_tokens: 117964
     timeout_s: 6
     latencia_s: 0.5
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: groq-allam-2-7b
@@ -137,10 +124,8 @@ modelos:
     apto_hasta_tokens: 3096
     timeout_s: 6
     latencia_s: 0.5
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-cohere-north-mini-code-free
@@ -152,10 +137,8 @@ modelos:
     apto_hasta_tokens: 230400
     timeout_s: 6
     latencia_s: 0.6
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nvidia-nemotron-3-5-content-safety-free
@@ -167,10 +150,8 @@ modelos:
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 0.6
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nvidia-nemotron-3-5-lightning-free
@@ -182,10 +163,8 @@ modelos:
     apto_hasta_tokens: 900000
     timeout_s: 6
     latencia_s: 85.1
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nvidia-nemotron-3-super-120b-a12b-free
@@ -197,10 +176,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 0.7
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-openrouter-free
@@ -212,10 +189,8 @@ modelos:
     apto_hasta_tokens: 180000
     timeout_s: 6
     latencia_s: 0.7
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: groq-groq-compound
@@ -227,10 +202,8 @@ modelos:
     apto_hasta_tokens: 117964
     timeout_s: 6
     latencia_s: 0.8
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free
@@ -242,10 +215,8 @@ modelos:
     apto_hasta_tokens: 230400
     timeout_s: 6
     latencia_s: 0.9
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: groq-groq-compound-mini
@@ -257,10 +228,8 @@ modelos:
     apto_hasta_tokens: 117964
     timeout_s: 6
     latencia_s: 0.9
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-inclusionai-ling-3-0-flash-fin-free
@@ -272,10 +241,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 1.1
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-inclusionai-ling-3-0-flash-vl-free
@@ -287,10 +254,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 1.2
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-google-lyria-3-pro-preview
@@ -302,10 +267,8 @@ modelos:
     apto_hasta_tokens: 943718
     timeout_s: 6
     latencia_s: 1.2
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-poolside-laguna-s-2-1-free
@@ -317,10 +280,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 0.9
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-inclusionai-ling-3-0-flash-sante-free
@@ -332,10 +293,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 1.4
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nex-agi-nex-n2-5-mini-free
@@ -347,10 +306,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 2.1
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: bai-qwen3-8-flash
@@ -362,10 +319,8 @@ modelos:
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 2.4
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: desconocido
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "desconocido"
     costo_in_millon: None
     costo_out_millon: None
   - name: bai-hy3
@@ -377,10 +332,8 @@ modelos:
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 2.5
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: desconocido
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "desconocido"
     costo_in_millon: None
     costo_out_millon: None
   - name: openrouter-dots-studio-dots-3-note-preview-free
@@ -392,10 +345,8 @@ modelos:
     apto_hasta_tokens: 460800
     timeout_s: 6
     latencia_s: 2.9
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-liquid-lfm-2-5-2-6b-free
@@ -407,10 +358,8 @@ modelos:
     apto_hasta_tokens: 58982
     timeout_s: 6
     latencia_s: 1.7
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nex-agi-nex-n2-5-pro-free
@@ -422,10 +371,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 4.5
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-nvidia-nemotron-3-ultra-550b-a55b-free
@@ -437,10 +384,8 @@ modelos:
     apto_hasta_tokens: 900000
     timeout_s: 6
     latencia_s: 104.6
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: bai-mimo-v2-5
@@ -452,10 +397,8 @@ modelos:
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 22.1
-    verificado_ts: 2026-09-10 18:53
-...
-    costo_estado: desconocido
-...
+    verificado_ts: "2026-09-10 18:53"
+    costo_estado: "desconocido"
     costo_in_millon: None
     costo_out_millon: None
   - name: deepseek-flash
@@ -468,18 +411,15 @@ modelos:
     timeout_s: 45
     latencia_s: None
     verificado_ts: None
-    costo_estado: pago
-...
+    costo_estado: "pago"
     costo_in_millon: 0.15
     costo_out_millon: 0.6
     costo_in_millon_pico: 0.3
     costo_out_millon_pico: 1.2
     costo_cache_in_millon: 0.003
     costo_cache_in_millon_pico: 0.006
-    horario_pico: 01:00-04:00 y 06:00-10:00 UTC, lunes a viernes; el resto es valle (el valle es la mitad del pico)
-...
-    fuente_costo: https://api-docs.deepseek.com/quick_start/pricing
-...
+    horario_pico: "01:00-04:00 y 06:00-10:00 UTC, lunes a viernes; el resto es valle (el valle es la mitad del pico)"
+    fuente_costo: "https://api-docs.deepseek.com/quick_start/pricing"
   - name: openrouter-google-gemma-4-26b-a4b-it-free
     proveedor: openrouter
     model: google/gemma-4-26b-a4b-it:free
@@ -489,10 +429,8 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 2.7
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
   - name: openrouter-google-gemma-4-31b-it-free
@@ -504,9 +442,7 @@ modelos:
     apto_hasta_tokens: 235929
     timeout_s: 6
     latencia_s: 1.9
-    verificado_ts: 2026-09-15 10:11
-...
-    costo_estado: gratis
-...
+    verificado_ts: "2026-09-15 10:11"
+    costo_estado: "gratis"
     costo_in_millon: 0.0
     costo_out_millon: 0.0
