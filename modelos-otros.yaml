@@ -1,0 +1,1915 @@
+# Catalogo de modelos NO-CHAT gratuitos  (SEMILLA - lo que baja cada instalacion)
+# ==================================================================
+#   URL: https://raw.githubusercontent.com/and-netx/testing-app/main/modelos-otros.yaml
+#
+# Es el hermano de modelos.yaml: ahi van los modelos que ATIENDEN CHAT (y con eso el
+# gateway arma su cantera de escalones). Aca van los que NO conversan: transcripcion,
+# voz, embeddings, rerank, OCR, musica, datos. Sale del relevamiento del 15/09/26.
+#
+# POR QUE UN ARCHIVO APARTE
+#  - Ninguno de estos puede ser escalon del gateway: no aceptan una conversacion.
+#    Pedirle chat a un modelo de musica devuelve 502 (paso con Lyria, ver no_usar).
+#  - Aca SOLO entra lo gratuito. Si se paga, no va: va a no_usar o al historico.
+#
+# REGLAS (mismas que modelos.yaml donde aplican)
+#  - NO lleva claves: solo el NOMBRE de la variable de entorno (api_key_env).
+#  - herramientas/vision: ningun modelo de aca hace tool-calling -> tools: false.
+#    vision: true solo si ACEPTA imagen de entrada (OCR, documentos, letra desde foto).
+#  - costo_estado: gratis | desconocido. Nunca un 0.0 ambiguo.
+#  - class 'local'  = pesos abiertos: corre en la maquina, sin cuota, sin red, sin key.
+#    class 'api_free' = free tier de un proveedor: tiene limite y hay que respetarlo.
+#  - params / peso_fp16_gb: los parametros los informa la API de HuggingFace; el peso en
+#    GB es DERIVADO (2 bytes por parametro en fp16) y es null cuando no hay dato.
+#  - acceso: abierto | aceptar_terminos_hf (el repo exige aceptar condiciones en HF).
+#  - estado_free: verificado (llamada real OK) | sin_verificar (lo dice la doc) |
+#    sin_key (no hay credencial propia para probarlo) | bloqueado_terminos |
+#    bloqueado_credencial (existe la credencial pero esta vencida/mal).
+#  - unidad_cobro = en que unidad cobra el proveedor cuando se agota el free tier.
+#
+# OJO CON LAS LICENCIAS: varios modelos gratis traen licencia NO comercial
+#   (cc-by-nc: musicgen, jina-reranker-v3, hubert-ecg) o con condiciones
+#   (CPML en xtts-v2). Gratis != vendible.
+#
+# HISTORICO: altas, bajas y descartes de este catalogo van a modelos-historico-otros.yaml.
+# ==================================================================
+
+semilla: 1
+actualizado: "2026-09-15 11:22"
+origen: "relevamiento del universo de modelos no-chat del 15/09/26 (catalogos de OpenRouter, Vertex/Gemini, OpenAI, Mistral, Cohere, Voyage, Jina, ElevenLabs, Deepgram, Groq, Cloudflare Workers AI, NVIDIA NIM y la taxonomia de tareas de HuggingFace)"
+alcance: "solo gratuitos: pesos abiertos que corren local, y free tiers de API. Nada que exija tarjeta entra en 'modelos'."
+ultima_revision: "2026-09-15: alta inicial. 47 modelos locales (metadata leida de la API de HF), 35 entradas de free tier, 5 trampas en no_usar. Numeros de gratuitidad leidos de la doc de cada proveedor; 3 endpoints probados con llamada real (Groq whisper OK, Mistral embed OK, Gemini 401 por credencial vencida)."
+fuentes_gratuidad:
+  locales: "https://huggingface.co/api/models/<id> (licencia, parametros y descargas, leidos el 2026-09-15 11:18)"
+  groq: "https://console.groq.com/docs/rate-limits (tabla Free Plan)"
+  mistral: "https://docs.mistral.ai/getting-started/models/ (plan gratuito de La Plateforme)"
+  gemini: "https://ai.google.dev/gemini-api/docs/pricing (columna Free Tier: 'Free of charge')"
+  cloudflare: "https://developers.cloudflare.com/workers-ai/platform/pricing/ (free allocation)"
+  voyage: "https://docs.voyageai.com/docs/pricing (200 millones de tokens por modelo)"
+  elevenlabs: https://elevenlabs.io/docs/models
+  deepgram: https://developers.deepgram.com/docs/models-languages-overview
+  cohere: https://docs.cohere.com/docs/models
+  jina: https://jina.ai/embeddings/
+  huggingface: https://huggingface.co/docs/inference-providers/pricing
+  nvidia: https://build.nvidia.com/
+notas:
+  tesseract: "El OCR basico ya esta instalado en esta maquina (/usr/bin/tesseract), igual que ffmpeg."
+  credencial_gemini: "La GEMINI_API_KEY de ~/.hermes/.env es un token efimero vencido (13 caracteres, empieza 'AQ.A'), no una API key de AI Studio ('AIza...', ~39). Por eso los 6 modelos de Google de este archivo quedan en estado bloqueado_credencial."
+  duplicado_en_modelos_yaml: "openrouter-google-lyria-3-pro-preview figura en modelos.yaml como 'gratis' (el catalogo lo lista con in=0 out=0). Es un error de origen: ver no_usar en este archivo."
+  local_vs_api: "Todo lo que dice 'local' no necesita red ni credencial: es la parte del catalogo que no se puede caer ni cobrar."
+proveedores:
+  groq:
+    base_url: https://api.groq.com/openai/v1
+    api_key_env: GROQ_API_KEY
+  mistral:
+    base_url: https://api.mistral.ai/v1
+    api_key_env: MISTRAL_API_KEY
+  gemini:
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    api_key_env: GEMINI_API_KEY
+  cloudflare:
+    base_url: "https://api.cloudflare.com/client/v4/accounts/<account_id>/ai/run"
+    api_key_env: CLOUDFLARE_API_TOKEN
+  voyage:
+    base_url: https://api.voyageai.com/v1
+    api_key_env: VOYAGE_API_KEY
+  jina:
+    base_url: https://api.jina.ai/v1
+    api_key_env: JINA_API_KEY
+  cohere:
+    base_url: https://api.cohere.com/v2
+    api_key_env: COHERE_API_KEY
+  deepgram:
+    base_url: https://api.deepgram.com/v1
+    api_key_env: DEEPGRAM_API_KEY
+  elevenlabs:
+    base_url: https://api.elevenlabs.io/v1
+    api_key_env: ELEVENLABS_API_KEY
+  huggingface:
+    base_url: https://router.huggingface.co/v1
+    api_key_env: HF_TOKEN
+  nvidia:
+    base_url: https://integrate.api.nvidia.com/v1
+    api_key_env: NVIDIA_API_KEY
+resumen:
+  local: 44
+  api_free: 41
+  no_usar: 5
+  verificados_con_llamada_real:
+    - groq-whisper-large-v3-turbo
+    - mistral-embed
+no_usar:
+  - name: openrouter-google-lyria-3-pro-preview
+    proveedor: openrouter
+    model: google/lyria-3-pro-preview
+    ts: "2026-09-15 10:41"
+    motivo: "El catalogo lo lista sin precio y parece gratis: pedirle AUDIO devuelve HTTP 402 'requires at least $0.50 in balance for audio output' y pedirle CHAT devuelve HTTP 502 (error interno 500 de Google AI Studio). No es gratis y no es un modelo de chat."
+    reintentable: false
+  - name: openrouter-google-lyria-3-clip-preview
+    proveedor: openrouter
+    model: google/lyria-3-clip-preview
+    ts: "2026-09-15 10:41"
+    motivo: "Igual que el pro: 402 pidiendo audio ($0,50 de saldo minimo), 502 pidiendo chat. En el historico de modelos.yaml figuraba como '502 del proveedor' sin el motivo real."
+    reintentable: false
+  - name: elevenlabs-eleven-music-v2-5
+    proveedor: elevenlabs
+    model: "Eleven Music v2.5"
+    ts: "2026-09-15 09:05"
+    motivo: "La musica de ElevenLabs no entra en el plan free: su pagina de modelos la lista como producto aparte. Sin free tier declarado para generar canciones."
+    reintentable: false
+  - name: suno-v6
+    proveedor: suno
+    model: "Suno v6"
+    ts: "2026-09-15 09:05"
+    motivo: "Suno no publica free tier de API: es suscripcion mensual (v6 lanzado el 09/09/26). Sin endpoint gratuito que un gateway pueda llamar."
+    reintentable: false
+  - name: openai-gpt-audio
+    proveedor: openai
+    model: "gpt-audio / gpt-realtime-2.1"
+    ts: "2026-09-15 09:05"
+    motivo: "Audio en tiempo real de OpenAI: sin free tier, se cobra por minuto y por token de audio. Todo el audio de este catalogo ya se cubre gratis con Groq (ASR) y local (TTS)."
+    reintentable: false
+modelos:
+  - name: local-whisper-large-v3-turbo
+    clase: local
+    tipo: asr
+    model: openai/whisper-large-v3-turbo
+    runtime:
+      - faster-whisper
+      - whisper.cpp
+    licencia: mit
+    params: 810000000.0
+    peso_fp16_gb: 1.62
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    descargas_hf: 6711405
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "1,6 GB en fp16. Es el mismo modelo que sirve Groq, aca sin cuota ni red."
+  - name: local-faster-whisper-large-v3
+    clase: local
+    tipo: asr
+    model: Systran/faster-whisper-large-v3
+    runtime:
+      - faster-whisper
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    descargas_hf: 1053274
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "El paquete ya convertido a CTranslate2: el mas rapido en CPU. Params no informados por la API."
+  - name: local-medasr
+    clase: local
+    tipo: asr_medica
+    model: google/medasr
+    runtime:
+      - transformers
+    licencia: other
+    params: 110000000.0
+    peso_fp16_gb: 0.22
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    descargas_hf: 21733
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Terminologia clinica: 15% menos errores que whisper en terminos medicos aislados."
+  - name: local-kokoro-82m
+    clase: local
+    tipo: tts
+    model: hexgrad/Kokoro-82M
+    runtime:
+      - kokoro-onnx
+      - onnxruntime
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    descargas_hf: 11594066
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "82M de parametros: el TTS util mas chico. Corre en CPU sin drama."
+  - name: local-kokoro-82m-onnx
+    clase: local
+    tipo: tts
+    model: onnx-community/Kokoro-82M-v1.0-ONNX
+    runtime:
+      - onnxruntime
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    descargas_hf: 747620
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Mismo Kokoro ya exportado a ONNX."
+  - name: local-qwen3-tts-customvoice
+    clase: local
+    tipo: tts
+    model: Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice
+    runtime:
+      - transformers
+    licencia: apache-2.0
+    params: 1920000000.0
+    peso_fp16_gb: 3.84
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+      - audio_muestra
+    salida:
+      - audio
+    descargas_hf: 2591001
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Clonacion de voz con una muestra corta. Uso comercial permitido por la licencia."
+  - name: local-xtts-v2
+    clase: local
+    tipo: tts
+    model: coqui/XTTS-v2
+    runtime:
+      - coqui-tts
+    licencia: other
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+      - audio_muestra
+    salida:
+      - audio
+    descargas_hf: 7300281
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Licencia CPML: NO es libre para uso comercial. Verificar antes de vender algo con esto."
+  - name: local-silero-vad
+    clase: local
+    tipo: vad
+    model: onnx-community/silero-vad
+    runtime:
+      - onnxruntime
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - segmentos
+    descargas_hf: 0
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Recorta silencios antes de transcribir: baja el costo por minuto de cualquier ASR."
+  - name: local-smart-turn-v2
+    clase: local
+    tipo: deteccion_turnos
+    model: pipecat-ai/smart-turn-v2
+    runtime:
+      - onnxruntime
+    licencia: bsd-2-clause
+    params: 90000000.0
+    peso_fp16_gb: 0.18
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - turno
+    descargas_hf: 2921
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Sabe si el que habla termino o solo hizo una pausa: es lo que evita que un agente corte al cliente."
+  - name: local-pyannote-diarization-3-1
+    clase: local
+    tipo: diarizacion
+    model: pyannote/speaker-diarization-3.1
+    runtime:
+      - pyannote.audio
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - quien_hablo
+    descargas_hf: 8494589
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Dice QUIEN hablo y cuando. Exige aceptar condiciones en HF y un token."
+  - name: local-deepfilternet3
+    clase: local
+    tipo: limpieza_voz
+    model: soniqo/DeepFilterNet3-ONNX
+    runtime:
+      - onnxruntime
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - audio
+    descargas_hf: 283
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Saca ruido de fondo antes del ASR: mas barato que mandar audio sucio a un modelo grande."
+  - name: local-clap-htsat-fused
+    clase: local
+    tipo: clasificacion_audio
+    model: laion/clap-htsat-fused
+    runtime:
+      - transformers
+    licencia: apache-2.0
+    params: 150000000.0
+    peso_fp16_gb: 0.3
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - etiquetas
+    descargas_hf: 8028223
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Etiqueta sonido contra texto libre (que se escucha, que ambiente es)."
+  - name: local-ace-step-1
+    clase: local
+    tipo: musica
+    model: ACE-Step/ACE-Step-v1-3.5B
+    runtime:
+      - diffusers
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    descargas_hf: 0
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Musica con licencia permisiva: la alternativa gratis y comercial a Lyria/Suno."
+  - name: local-musicgen-medium
+    clase: local
+    tipo: musica
+    model: facebook/musicgen-medium
+    runtime:
+      - transformers
+    licencia: cc-by-nc-4.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    descargas_hf: 1946588
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Licencia NO comercial (cc-by-nc): sirve para experimentar, no para vender."
+  - name: local-stable-audio-3
+    clase: local
+    tipo: musica
+    model: Comfy-Org/stable-audio-3
+    runtime:
+      - ComfyUI
+    licencia: other
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    descargas_hf: 105366
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Empaquetado para ComfyUI; la licencia de Stability define el uso comercial."
+  - name: local-demucs-htdemucs
+    clase: local
+    tipo: separacion_stems
+    model: jasonvassallo/demucs-htdemucs-mlx
+    runtime:
+      - demucs
+    licencia: mit
+    params: 40000000.0
+    peso_fp16_gb: 0.08
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - pistas
+    descargas_hf: 34
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Separa voz, bateria, bajo y resto. OJO: facebook/demucs devolvio 401 al consultarlo hoy."
+  - name: local-basic-pitch
+    clase: local
+    tipo: audio_a_midi
+    model: spotify/basic-pitch
+    runtime:
+      - basic-pitch
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - midi
+    descargas_hf: 0
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Convierte audio a notas MIDI (melodia y bajo). La descarga la informa la API como 0."
+  - name: local-encodec-24khz
+    clase: local
+    tipo: codec_audio
+    model: facebook/encodec_24khz
+    runtime:
+      - transformers
+    licencia: null
+    params: 20000000.0
+    peso_fp16_gb: 0.04
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - tokens
+    descargas_hf: 211283
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "La API de HF no informa licencia. Audio en tokens discretos: es lo que usa un LLM para hablar audio."
+  - name: local-snac-24khz
+    clase: local
+    tipo: codec_audio
+    model: hubertsiuzdak/snac_24khz
+    runtime:
+      - snac
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - tokens
+    descargas_hf: 474547
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Codec mas moderno que EnCodec."
+  - name: local-bge-m3
+    clase: local
+    tipo: embedding_texto
+    model: BAAI/bge-m3
+    runtime:
+      - FlagEmbedding
+      - sentence-transformers
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    descargas_hf: 37775082
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Multilingue. Es el que ya usa la memoria vectorial de Hermes."
+  - name: local-embeddinggemma-300m
+    clase: local
+    tipo: embedding_texto
+    model: google/embeddinggemma-300m
+    runtime:
+      - sentence-transformers
+    licencia: gemma
+    params: 300000000.0
+    peso_fp16_gb: 0.6
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    descargas_hf: 2203139
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "300M: 1024 dimensiones sin GPU. Exige aceptar la licencia Gemma."
+  - name: local-qwen3-embedding-0.6b
+    clase: local
+    tipo: embedding_texto
+    model: Qwen/Qwen3-Embedding-0.6B
+    runtime:
+      - sentence-transformers
+    licencia: apache-2.0
+    params: 600000000.0
+    peso_fp16_gb: 1.2
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    descargas_hf: 8455464
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-nomic-embed-text-v1.5
+    clase: local
+    tipo: embedding_texto
+    model: nomic-ai/nomic-embed-text-v1.5
+    runtime:
+      - sentence-transformers
+    licencia: apache-2.0
+    params: 140000000.0
+    peso_fp16_gb: 0.28
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    descargas_hf: 15202198
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Ventana de 8k tokens: el que mas texto come por vector."
+  - name: local-minilm-l6-v2
+    clase: local
+    tipo: embedding_texto
+    model: sentence-transformers/all-MiniLM-L6-v2
+    runtime:
+      - sentence-transformers
+    licencia: apache-2.0
+    params: 20000000.0
+    peso_fp16_gb: 0.04
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    descargas_hf: 254208155
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "22M de parametros: el clasico ultraliviano."
+  - name: local-bge-reranker-v2-m3
+    clase: local
+    tipo: rerank
+    model: BAAI/bge-reranker-v2-m3
+    runtime:
+      - FlagEmbedding
+    licencia: apache-2.0
+    params: 570000000.0
+    peso_fp16_gb: 1.14
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    descargas_hf: 17999495
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Reordena resultados de busqueda: sube precision sin tocar el indice."
+  - name: local-jina-reranker-v3
+    clase: local
+    tipo: rerank
+    model: jinaai/jina-reranker-v3
+    runtime:
+      - transformers
+    licencia: cc-by-nc-4.0
+    params: 600000000.0
+    peso_fp16_gb: 1.2
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    descargas_hf: 782632
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Licencia NO comercial (cc-by-nc)."
+  - name: local-ms-marco-minilm
+    clase: local
+    tipo: rerank
+    model: cross-encoder/ms-marco-MiniLM-L6-v2
+    runtime:
+      - sentence-transformers
+    licencia: apache-2.0
+    params: 20000000.0
+    peso_fp16_gb: 0.04
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    descargas_hf: 87870858
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-tesseract
+    clase: local
+    tipo: ocr
+    model: "tesseract (paquete del sistema)"
+    runtime:
+      - tesseract
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+    salida:
+      - texto
+    descargas_hf: null
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "YA INSTALADO en esta maquina (binario /usr/bin/tesseract). OCR de texto impreso."
+  - name: local-paddleocr-vl
+    clase: local
+    tipo: ocr
+    model: PaddlePaddle/PaddleOCR-VL
+    runtime:
+      - PaddlePaddle
+    licencia: apache-2.0
+    params: 960000000.0
+    peso_fp16_gb: 1.92
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+    salida:
+      - texto
+      - estructura
+    descargas_hf: 7443
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "OCR con layout: tablas y bloques, no solo la linea de texto."
+  - name: local-deepseek-ocr
+    clase: local
+    tipo: ocr
+    model: deepseek-ai/DeepSeek-OCR
+    runtime:
+      - transformers
+    licencia: mit
+    params: 3340000000.0
+    peso_fp16_gb: 6.68
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+    salida:
+      - texto
+      - markdown
+    descargas_hf: 2361038
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "OCR a markdown con contexto largo. Necesita GPU para ser practico."
+  - name: local-donut-base
+    clase: local
+    tipo: doc_qa
+    model: naver-clova-ix/donut-base
+    runtime:
+      - transformers
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+    salida:
+      - texto
+    descargas_hf: 79710
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Lee documentos sin OCR aparte: imagen entra, campos salen."
+  - name: local-colqwen2
+    clase: local
+    tipo: doc_retrieval
+    model: vidore/colqwen2-v1.0
+    runtime:
+      - colpali-engine
+    licencia: apache-2.0
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+      - texto
+    salida:
+      - score
+    descargas_hf: 474659
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Busca dentro de PDFs escaneados como si fueran texto."
+  - name: local-colpali-v1-3
+    clase: local
+    tipo: doc_retrieval
+    model: vidore/colpali-v1.3
+    runtime:
+      - colpali-engine
+    licencia: mit
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+      - texto
+    salida:
+      - score
+    descargas_hf: 33312
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-tabpfn-v2-clf
+    clase: local
+    tipo: tabular_clasificacion
+    model: Prior-Labs/TabPFN-v2-clf
+    runtime:
+      - tabpfn
+    licencia: other
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - tabla
+    salida:
+      - clase
+    descargas_hf: 35233
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Clasifica tablas chicas sin entrenar: cero datos de entrenamiento de tu lado."
+  - name: local-tabpfn-v2-reg
+    clase: local
+    tipo: tabular_regresion
+    model: Prior-Labs/TabPFN-v2-reg
+    runtime:
+      - tabpfn
+    licencia: other
+    params: null
+    peso_fp16_gb: null
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - tabla
+    salida:
+      - numero
+    descargas_hf: 42319
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-timesfm-3
+    clase: local
+    tipo: forecast
+    model: google/timesfm-3.0-pytorch
+    runtime:
+      - timesfm
+    licencia: other
+    params: 330000000.0
+    peso_fp16_gb: 0.66
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - serie
+    salida:
+      - serie_futura
+    descargas_hf: 865343
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Predice valores futuros de una serie (ventas, consumo). No conversa."
+  - name: local-chronos-bolt-small
+    clase: local
+    tipo: forecast
+    model: amazon/chronos-bolt-small
+    runtime:
+      - chronos-forecasting
+    licencia: apache-2.0
+    params: 50000000.0
+    peso_fp16_gb: 0.1
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - serie
+    salida:
+      - serie_futura
+    descargas_hf: 9192812
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "50M: pronostico zero-shot en CPU."
+  - name: local-chronos-bolt-base
+    clase: local
+    tipo: forecast
+    model: amazon/chronos-bolt-base
+    runtime:
+      - chronos-forecasting
+    licencia: apache-2.0
+    params: 210000000.0
+    peso_fp16_gb: 0.42
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - serie
+    salida:
+      - serie_futura
+    descargas_hf: 1188266
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-prompt-guard-86m
+    clase: local
+    tipo: anti_prompt_injection
+    model: meta-llama/Prompt-Guard-86M
+    runtime:
+      - transformers
+    licencia: llama3.1
+    params: 280000000.0
+    peso_fp16_gb: 0.56
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - probabilidad
+    descargas_hf: 4528310
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Detecta inyeccion de prompts: es un clasificador, no un modelo que responde."
+  - name: local-shieldgemma-2b
+    clase: local
+    tipo: moderacion
+    model: google/shieldgemma-2b
+    runtime:
+      - transformers
+    licencia: gemma
+    params: 2610000000.0
+    peso_fp16_gb: 5.22
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - etiquetas
+    descargas_hf: 3167
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Moderacion de contenido con politica configurable."
+  - name: local-llama-guard-4-12b
+    clase: local
+    tipo: moderacion
+    model: meta-llama/Llama-Guard-4-12B
+    runtime:
+      - transformers
+    licencia: other
+    params: 12000000000.0
+    peso_fp16_gb: 24.0
+    acceso: aceptar_terminos_hf
+    tools: false
+    vision: true
+    entrada:
+      - texto
+      - imagen
+    salida:
+      - etiquetas
+    descargas_hf: 46985
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "12B: pesado. Multimodal (texto e imagen)."
+  - name: local-gliner2-base
+    clase: local
+    tipo: pii_ner
+    model: fastino/gliner2-base-v1
+    runtime:
+      - gliner
+    licencia: apache-2.0
+    params: 210000000.0
+    peso_fp16_gb: 0.42
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - entidades
+    descargas_hf: 399284
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Saca nombres, DNI, telefonos, CUIT de un texto sin entrenar nada."
+  - name: local-eegpt
+    clase: local
+    tipo: "bioseñal_eeg"
+    model: braindecode/eegpt-pretrained
+    runtime:
+      - braindecode
+    licencia: bsd-3-clause
+    params: 30000000.0
+    peso_fp16_gb: 0.06
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - eeg
+    salida:
+      - etiquetas
+    descargas_hf: 13890
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: local-hubert-ecg
+    clase: local
+    tipo: "bioseñal_ecg"
+    model: Edoardo-Coppola/hubert-ecg-base
+    runtime:
+      - transformers
+    licencia: cc-by-nc-4.0
+    params: 90000000.0
+    peso_fp16_gb: 0.18
+    acceso: abierto
+    tools: false
+    vision: false
+    entrada:
+      - ecg
+    salida:
+      - etiquetas
+    descargas_hf: 1938
+    verificado_ts: "2026-09-15 11:18"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Licencia NO comercial."
+  - name: groq-whisper-large-v3-turbo
+    clase: api_free
+    tipo: asr
+    proveedor: groq
+    model: whisper-large-v3-turbo
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "plan free de Groq: 20 RPM, 2.000 pedidos/dia, 7.200 s de audio por hora, 28.800 s de audio por dia (8 h)"
+    estado_free: verificado
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://console.groq.com/docs/rate-limits
+    nota: "HTTP 200 con la key del gateway: transcribio un WAV de prueba. 8 h de audio por dia, gratis."
+  - name: groq-whisper-large-v3
+    clase: api_free
+    tipo: asr
+    proveedor: groq
+    model: whisper-large-v3
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "plan free de Groq: 20 RPM, 2.000 pedidos/dia, 7.200 s de audio por hora, 28.800 s de audio por dia (8 h)"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://console.groq.com/docs/rate-limits
+    nota: "Mismo limite declarado que turbo; no se probo porque turbo ya cubre el caso."
+  - name: groq-orpheus-v1-english
+    clase: api_free
+    tipo: tts
+    proveedor: groq
+    model: canopylabs/orpheus-v1-english
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: token
+    limite_free: "plan free de Groq: 10 RPM, 100 pedidos/dia, 1,2K tokens por minuto"
+    estado_free: bloqueado_terminos
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://console.groq.com/docs/rate-limits
+    nota: "HTTP 400 real: 'requires terms acceptance'. Se destraba aceptando los terminos en la consola de Groq."
+  - name: mistral-embed
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: mistral
+    model: mistral-embed
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: verificado
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.mistral.ai/getting-started/models/
+    nota: "HTTP 200 con la key del gateway: embeddings respondiendo sin costo."
+  - name: mistral-codestral-embed
+    clase: api_free
+    tipo: embedding_codigo
+    proveedor: mistral
+    model: codestral-embed
+    tools: false
+    vision: false
+    entrada:
+      - texto_codigo
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: mistral-moderation-2603
+    clase: api_free
+    tipo: moderacion
+    proveedor: mistral
+    model: mistral-moderation-2603
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - etiquetas
+    unidad_cobro: token
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Detecta jailbreak ademas de contenido; en su doc es 'Mistral Moderation 2'."
+  - name: mistral-ocr-4-1
+    clase: api_free
+    tipo: ocr
+    proveedor: mistral
+    model: mistral-ocr-4-1
+    tools: false
+    vision: true
+    entrada:
+      - imagen
+      - pdf
+    salida:
+      - texto
+      - markdown
+    unidad_cobro: pagina
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Bounding boxes por parrafo y confianza por bloque."
+  - name: mistral-voxtral-mini-transcribe-realtime
+    clase: api_free
+    tipo: asr
+    proveedor: mistral
+    model: voxtral-mini-transcribe-realtime-2602
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+  - name: mistral-voxtral-mini-tts
+    clase: api_free
+    tipo: tts
+    proveedor: mistral
+    model: voxtral-mini-tts-2603
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: token
+    limite_free: "free tier de Mistral (plan gratuito de La Plateforme); endpoint verificado a mano el 2026-09-15 10:52"
+    estado_free: sin_verificar
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    nota: "Con clonacion de voz zero-shot."
+  - name: gemini-3-5-transcribe
+    clase: api_free
+    tipo: asr
+    proveedor: gemini
+    model: gemini-3.5-transcribe
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "free tier de la Gemini API: 'Free of charge' en la tabla de precios (sujeto a limites de tasa)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+    nota: "NO probado: la GEMINI_API_KEY guardada es un token efimero vencido (13 caracteres, 'AQ.A'), devuelve 401. Con una API key de AI Studio ('AIza...') entra sin pagar."
+  - name: gemini-3-5-transcribe-live
+    clase: api_free
+    tipo: asr_streaming
+    proveedor: gemini
+    model: gemini-3.5-transcribe-live
+    tools: false
+    vision: false
+    entrada:
+      - audio_stream
+    salida:
+      - texto_stream
+    unidad_cobro: segundo_audio
+    limite_free: "free tier declarado 'Free of charge' (limites de tasa por modelo)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+    nota: "Transcripcion bidireccional por WebSocket. Pago: ~$0,009 por minuto si se agota el free tier."
+  - name: gemini-3-5-live-translate
+    clase: api_free
+    tipo: traduccion_voz
+    proveedor: gemini
+    model: gemini-3.5-live-translate-preview
+    tools: false
+    vision: false
+    entrada:
+      - audio_stream
+    salida:
+      - audio_stream
+    unidad_cobro: segundo_audio
+    limite_free: "free tier declarado 'Free of charge' (limites de tasa por modelo)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+    nota: "Traduccion voz a voz en vivo, 70+ idiomas. Pago: ~$0,037 por minuto."
+  - name: gemini-3-1-flash-tts
+    clase: api_free
+    tipo: tts
+    proveedor: gemini
+    model: gemini-3.1-flash-tts-preview
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: token
+    limite_free: "free tier declarado 'Free of charge' (limites de tasa por modelo)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+    nota: "Pago: $1 por 1M tokens de texto de entrada y $20 por 1M de audio de salida (25 tokens = 1 s de audio)."
+  - name: gemini-embedding-2
+    clase: api_free
+    tipo: embedding_multimodal
+    proveedor: gemini
+    model: gemini-embedding-2
+    tools: false
+    vision: true
+    entrada:
+      - texto
+      - imagen
+      - audio
+      - video
+      - pdf
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "free tier declarado 'Free of charge' (limites de tasa por modelo)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+    nota: "Primer embedding multimodal de Google: todo al mismo espacio vectorial. Pago: $0,20 por 1M tokens de texto."
+  - name: gemini-robotics-er-2
+    clase: api_free
+    tipo: robotica_vla
+    proveedor: gemini
+    model: gemini-robotics-er-2-preview
+    tools: false
+    vision: true
+    entrada:
+      - texto
+      - imagen
+      - video
+      - audio
+    salida:
+      - acciones
+      - texto
+    unidad_cobro: token
+    limite_free: "free tier declarado 'Free of charge' (limites de tasa por modelo)"
+    estado_free: bloqueado_credencial
+    verificado_ts: "2026-09-15 10:52"
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://ai.google.dev/gemini-api/docs/pricing
+  - name: cf-whisper-large-v3-turbo
+    clase: api_free
+    tipo: asr
+    proveedor: cloudflare
+    model: whisper-large-v3-turbo
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+    nota: "Sin key propia configurada, no probado. El prefijo del endpoint es @cf/."
+  - name: cf-whisper-tiny-en
+    clase: api_free
+    tipo: asr
+    proveedor: cloudflare
+    model: whisper-tiny-en
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: cf-bge-m3
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: cloudflare
+    model: bge-m3
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: cf-bge-reranker-base
+    clase: api_free
+    tipo: rerank
+    proveedor: cloudflare
+    model: bge-reranker-base
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: cf-embeddinggemma-300m
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: cloudflare
+    model: embeddinggemma-300m
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: cf-m2m100-1-2b
+    clase: api_free
+    tipo: traduccion
+    proveedor: cloudflare
+    model: m2m100-1.2b
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - texto
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+    nota: "Traduccion entre idiomas sin pasar por un chat."
+  - name: cf-melotts
+    clase: api_free
+    tipo: tts
+    proveedor: cloudflare
+    model: melotts
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: cf-deepgram-nova
+    clase: api_free
+    tipo: asr
+    proveedor: cloudflare
+    model: "deepgram nova (transcribe)"
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+    nota: "ASR de Deepgram servido por Cloudflare, facturado en Neurons."
+  - name: cf-smart-turn-v2
+    clase: api_free
+    tipo: deteccion_turnos
+    proveedor: cloudflare
+    model: pipecat-ai/smart-turn-v2
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - turno
+    unidad_cobro: neuron
+    limite_free: "Workers AI: 10.000 Neurons por dia sin costo ($0,011 por 1.000 despues), reinicia 00:00 UTC"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.cloudflare.com/workers-ai/platform/pricing/
+  - name: voyage-4-large
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: voyage
+    model: voyage-4-large
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "200 millones de tokens gratis por cuenta, despues $0,12 por 1M"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.voyageai.com/docs/pricing
+  - name: voyage-4
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: voyage
+    model: voyage-4
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "200 millones de tokens gratis por cuenta, despues $0,06 por 1M"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.voyageai.com/docs/pricing
+  - name: voyage-4-lite
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: voyage
+    model: voyage-4-lite
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "200 millones de tokens gratis por cuenta, despues $0,02 por 1M"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.voyageai.com/docs/pricing
+  - name: jina-embeddings-v5
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: jina
+    model: jina-embeddings-v5
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "API key gratis con tokens de prueba (la doc no publica el numero)"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://jina.ai/embeddings/
+    nota: "La key se pide sin tarjeta."
+  - name: jina-reranker-v3-5
+    clase: api_free
+    tipo: rerank
+    proveedor: jina
+    model: jina-reranker-v3.5
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    unidad_cobro: token
+    limite_free: "API key gratis con tokens de prueba"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://jina.ai/reranker/
+  - name: cohere-embed-v4
+    clase: api_free
+    tipo: embedding_texto
+    proveedor: cohere
+    model: embed-v4.0
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - vector
+    unidad_cobro: token
+    limite_free: "trial key gratuita con limites de tasa"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.cohere.com/docs/models
+  - name: cohere-rerank-v4-fast
+    clase: api_free
+    tipo: rerank
+    proveedor: cohere
+    model: rerank-v4.0-fast
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    unidad_cobro: request
+    limite_free: "trial key gratuita con limites de tasa (1.000 pedidos/mes en el trial declarado)"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.cohere.com/docs/models
+  - name: cohere-rerank-v4-pro
+    clase: api_free
+    tipo: rerank
+    proveedor: cohere
+    model: rerank-v4.0-pro
+    tools: false
+    vision: false
+    entrada:
+      - consulta
+      - documento
+    salida:
+      - score
+    unidad_cobro: request
+    limite_free: "trial key gratuita con limites de tasa"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://docs.cohere.com/docs/models
+  - name: deepgram-nova-3
+    clase: api_free
+    tipo: asr
+    proveedor: deepgram
+    model: nova-3
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "free api key con credito de bienvenida (la doc no publica el monto)"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.deepgram.com/docs/models-languages-overview
+  - name: deepgram-flux-general-multi
+    clase: api_free
+    tipo: asr_conversacional
+    proveedor: deepgram
+    model: flux-general-multi
+    tools: false
+    vision: false
+    entrada:
+      - audio_stream
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "free api key con credito de bienvenida"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://developers.deepgram.com/docs/models-languages-overview
+    nota: "Entiende el turno de conversacion en vez de transcribir pasivo."
+  - name: elevenlabs-eleven-flash-v2-5
+    clase: api_free
+    tipo: tts
+    proveedor: elevenlabs
+    model: eleven_flash_v2_5
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: caracter
+    limite_free: "plan free de ElevenLabs: creditos mensuales, sin tarjeta"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://elevenlabs.io/docs/models
+  - name: elevenlabs-eleven-v3
+    clase: api_free
+    tipo: tts
+    proveedor: elevenlabs
+    model: eleven_v3
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: caracter
+    limite_free: "plan free de ElevenLabs: creditos mensuales"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://elevenlabs.io/docs/models
+    nota: "~280 ms de latencia: el mas expresivo de la casa."
+  - name: elevenlabs-scribe-v2
+    clase: api_free
+    tipo: asr
+    proveedor: elevenlabs
+    model: scribe_v2
+    tools: false
+    vision: false
+    entrada:
+      - audio
+    salida:
+      - texto
+    unidad_cobro: segundo_audio
+    limite_free: "plan free de ElevenLabs: creditos mensuales"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://elevenlabs.io/docs/models
+  - name: elevenlabs-scribe-v2-realtime
+    clase: api_free
+    tipo: asr_streaming
+    proveedor: elevenlabs
+    model: scribe_v2_realtime
+    tools: false
+    vision: false
+    entrada:
+      - audio_stream
+    salida:
+      - texto_stream
+    unidad_cobro: segundo_audio
+    limite_free: "plan free de ElevenLabs: creditos mensuales"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://elevenlabs.io/docs/models
+  - name: elevenlabs-text-to-sound-v2
+    clase: api_free
+    tipo: efectos_sonido
+    proveedor: elevenlabs
+    model: eleven_text_to_sound_v2
+    tools: false
+    vision: false
+    entrada:
+      - texto
+    salida:
+      - audio
+    unidad_cobro: caracter
+    limite_free: "plan free de ElevenLabs: creditos mensuales"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://elevenlabs.io/docs/models
+    nota: "Efectos de sonido sin royalties desde un texto."
+  - name: hf-inference-providers
+    clase: api_free
+    tipo: varios
+    proveedor: huggingface
+    model: "inference-providers (router)"
+    tools: false
+    vision: false
+    entrada:
+      - varios
+    salida:
+      - varios
+    unidad_cobro: token
+    limite_free: "credito mensual: $0,10 en cuenta free, $2,00 en PRO"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://huggingface.co/docs/inference-providers/pricing
+    nota: "Un solo endpoint que rutea a muchos proveedores: sirve para probar, no para produccion."
+  - name: nvidia-build-nim
+    clase: api_free
+    tipo: varios
+    proveedor: nvidia
+    model: "build.nvidia.com (NIM)"
+    tools: false
+    vision: false
+    entrada:
+      - varios
+    salida:
+      - varios
+    unidad_cobro: token
+    limite_free: "creditos gratuitos al registrarse (la pagina no publica el monto)"
+    estado_free: sin_key
+    verificado_ts: null
+    costo_estado: gratis
+    costo_in_millon: 0.0
+    costo_out_millon: 0.0
+    fuente_free: https://build.nvidia.com/
+    nota: "Un NIM por modelo: ASR, TTS, embeddings, rerank, OCR y forecast, todos detras de una misma cuenta."

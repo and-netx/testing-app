@@ -1,0 +1,145 @@
+# Historico del catalogo de modelos NO-CHAT (el hermano de modelos-otros.yaml)
+# ==================================================================
+# El registro que CRECE: cada alta, cada baja, cada descarte y cada bloqueo, con
+# su motivo, su fecha y si puede volver. NO lo baja nadie (el catalogo vivo esta
+# en modelos-otros.yaml): esto es para el mantenimiento -- que el barrido recuerde
+# entre corridas y no gaste cuota re-probando lo que ya se sabe.
+#
+# CAMPOS de un evento: ts, tipo (alta|baja|descartado|bloqueado), name/proveedor/
+#   model, motivo, reintentable (true|false), reintentar_en (fecha) si aplica.
+#
+# REGLA DE REINTENTO (el motivo manda, no el gusto)
+#   HTTP 404 / 410    -> muerto: el proveedor lo saco del catalogo.  reintentable: false
+#   HTTP 401 / 403    -> acceso restringido o id privado/renombrado. reintentable: true (mes)
+#   HTTP 429          -> saturado: puede volver solo.                reintentable: true (semana)
+#   HTTP 402          -> exige saldo: no es gratis ni lo va a ser.   reintentable: false
+#   HTTP 400 'terms'  -> falta aceptar terminos.                     reintentable: true (al aceptarlos)
+#   Trampa de catalogo (se lista como gratis y no lo es)             reintentable: false
+#   Bloqueado por credencial propia (key vencida / mal tipo)         reintentable: true (al renovar)
+#
+# OJO: 403 NO es muerte. Un 403 es "no me dejan todavia" (region, plan, acceso
+# cerrado): se registra y se reintenta en la fecha. Lo definitivo es el 404/410
+# y la trampa. Por eso modelos.yaml solo lleva en no_usar lo irrecuperable.
+# ==================================================================
+
+historico: 1
+actualizado: 2026-09-15 11:35
+
+resumen:
+  vivos: 85
+  altas: 85
+  bajas: 0
+  descartados: 9
+  bloqueados: 2
+  nota: >-
+    Arranca el 15/09/26 con el relevamiento del universo no-chat de ese dia: 85
+    gratuitos dados de alta (44 de pesos abiertos + 41 de free tier en 11
+    proveedores). Lo que NO quedo en pie son 11 eventos: 5 trampas de catalogo
+    (Lyria x2, Eleven Music, Suno v6, gpt-audio), 4 ids de HuggingFace que
+    devolvieron 401 (6 ids contando los renombrados de demucs) y 2 bloqueos por
+    puerta, no por modelo (1 detras de aceptacion de terminos, 6 modelos de
+    Gemini con la credencial vencida).
+
+eventos:
+  # --- origen ---
+  - ts: "2026-09-15 11:22"
+    tipo: alta
+    nota: >-
+      Alta inicial: 44 modelos locales (pesos abiertos, metadata de licencia y
+      parametros leida de la API de HuggingFace) y 41 entradas de free tier.
+      Probados con llamada real: groq-whisper-large-v3-turbo (HTTP 200) y
+      mistral-embed (HTTP 200). El resto queda con estado_free sin_verificar o
+      sin_key: se probaran cuando haya credencial.
+    reintentable: false
+  # --- descartados: trampas de catalogo (parecen gratis y no lo son) ---
+  - ts: "2026-09-15 10:41"
+    tipo: descartado
+    name: openrouter-google-lyria-3-clip-preview
+    proveedor: openrouter
+    model: google/lyria-3-clip-preview
+    motivo: "HTTP 402 pidiendo audio: 'This request requires at least $0.50 in balance for audio output'. Pidiendole chat da 502 (500 interno de Google AI Studio). El catalogo de OpenRouter lo publica sin precio (in=0 out=0): parece gratis y no lo es."
+    reintentable: false
+  - ts: "2026-09-15 10:41"
+    tipo: descartado
+    name: openrouter-google-lyria-3-pro-preview
+    proveedor: openrouter
+    model: google/lyria-3-pro-preview
+    motivo: "HTTP 402 con el mismo texto que el clip ('requires at least $0.50 in balance for audio output'). Ademas el pago directo de Google es por cancion ($0,08), sin free tier."
+    reintentable: false
+  - ts: "2026-09-15 09:05"
+    tipo: descartado
+    name: elevenlabs-eleven-music-v2-5
+    proveedor: elevenlabs
+    model: Eleven Music v2.5
+    motivo: "La musica de ElevenLabs se vende aparte: no entra en el plan free. Sin free tier declarado para generar canciones."
+    reintentable: false
+  - ts: "2026-09-15 09:05"
+    tipo: descartado
+    name: suno-v6
+    proveedor: suno
+    model: Suno v6
+    motivo: "Suno no tiene free tier de API: es suscripcion (v6 lanzado el 09/09/26). No hay endpoint gratuito que un gateway pueda llamar."
+    reintentable: false
+  - ts: "2026-09-15 09:05"
+    tipo: descartado
+    name: openai-gpt-audio
+    proveedor: openai
+    model: gpt-audio / gpt-realtime-2.1
+    motivo: "Audio en tiempo real de OpenAI sin free tier: se cobra por minuto y por token de audio."
+    reintentable: false
+  # --- descartados: ids de HuggingFace con 401 (restringido o renombrado) ---
+  - ts: "2026-09-15 11:12"
+    tipo: descartado
+    name: local-demucs-canonico
+    proveedor: huggingface
+    model: facebook/demucs
+    motivo: "HTTP 401 al consultar la API: el id publico del modelo canonico de Demucs no responde (restringido o renombrado). Tambien 401 en adefossez/demucs."
+    reintentable: true
+    reintentar_en: "2026-10-15"
+    nota: "El catalogo ya apunta al reemplazo que SI responde: jasonvassallo/demucs-htdemucs-mlx (MIT)."
+  - ts: "2026-09-15 11:18"
+    tipo: descartado
+    name: local-silero-vad-canonico
+    proveedor: huggingface
+    model: snakers4/silero-vad
+    motivo: "HTTP 401 al consultar la API de HuggingFace: el id no es publico desde aca."
+    reintentable: true
+    reintentar_en: "2026-10-15"
+    nota: "El catalogo usa onnx-community/silero-vad, que responde bien."
+  - ts: "2026-09-15 11:18"
+    tipo: descartado
+    name: local-deepfilternet-canonico
+    proveedor: huggingface
+    model: Rikorose/DeepFilterNet
+    motivo: "HTTP 401 al consultar la API de HuggingFace."
+    reintentable: true
+    reintentar_en: "2026-10-15"
+    nota: "El catalogo usa soniqo/DeepFilterNet3-ONNX."
+  - ts: "2026-09-15 11:18"
+    tipo: descartado
+    name: timm-convnext-tiny
+    proveedor: huggingface
+    model: timm/convnext-tiny
+    motivo: "HTTP 401 al consultar la API: no es publico sin aceptar condiciones."
+    reintentable: true
+    reintentar_en: "2026-10-15"
+    nota: "No era para este catalogo (vision): se probo al buscar respaldo y quedo descartado."
+  # --- bloqueados: el modelo esta bien, la puerta no ---
+  - ts: "2026-09-15 10:52"
+    tipo: bloqueado
+    name: groq-orpheus-v1-english
+    proveedor: groq
+    model: canopylabs/orpheus-v1-english
+    motivo: "HTTP 400 real: 'The model canopylabs/orpheus-v1-english requires terms acceptance'. El free tier existe (10 RPM, 100/dia): falta aceptar los terminos en la consola de Groq."
+    reintentable: true
+    reintentar_en: "2026-09-16"
+    nota: "Se destraba con una accion humana de 30 segundos en la consola."
+  - ts: "2026-09-15 10:52"
+    tipo: bloqueado
+    name: gemini-nochat-completo
+    proveedor: gemini
+    model: gemini-3.5-transcribe, gemini-3.5-transcribe-live, gemini-3.5-live-translate-preview, gemini-3.1-flash-tts-preview, gemini-embedding-2, gemini-robotics-er-2-preview
+    motivo: "HTTP 401 con la GEMINI_API_KEY de ~/.hermes/.env: es un token efimero de 13 caracteres (prefijo 'AQ.A'), no una API key de AI Studio ('AIza', 39). Mismo 401 como ?key= y como Bearer."
+    reintentable: true
+    reintentar_en: "2026-09-22"
+    nota: "No es un problema de Google: los 6 modelos figuran 'Free of charge' en el free tier. Se destraba generando una API key nueva en AI Studio."

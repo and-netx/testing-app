@@ -8,15 +8,18 @@
 # CAMPOS de un evento: ts, tipo (alta|baja|descartado), name/proveedor/model,
 #   motivo, reintentable (true|false) y reintentar_en (fecha) si aplica.
 # REGLA: `reintentable: true` = volver a probarlo en esa fecha, no antes.
-#        un 429 (saturado) no es lo mismo que un 404 (no existe).
+#        429 (saturado) y 401/403 (restringido) -> SI, pueden abrirse.
+#        404/410 (no existe), 402 (pide saldo) y trampa de catalogo -> NO.
+#        OJO: un 403 NO es muerte, es "no me dejan todavia": se reintenta.
+#        Un 404 (no existe) NO es lo mismo que un 429 (esta saturado).
 # ==================================================================
 
 historico: 1
 actualizado: 2026-09-15
 
 resumen:
-  vivos: 28
-  bajas: 2
+  vivos: 27
+  bajas: 3
   descartados: 4
   nota: >-
     El historico arranca el 15/09/26 con lo que se sabe de las corridas previas.
@@ -85,9 +88,16 @@ eventos:
     reintentable: true
     reintentar_en: '2026-10-15'
     nota: "acceso restringido: puede abrirse"
-  - ts: '2026-09-15 10:11'
+  - ts: '2026-09-15 11:30'
+    tipo: baja
+    proveedor: openrouter
+    model: google/lyria-3-pro-preview
+    motivo: "Sale del catalogo vivo: es de MUSICA, no de chat, y no es gratis. Pedirle audio devuelve HTTP 402 'requires at least $0.50 in balance for audio output' y pedirle chat HTTP 502 (500 interno de Google AI Studio). El catalogo de OpenRouter lo lista sin precio y por eso estaba entre los 'gratis': es una trampa. Su lugar es modelos-otros.yaml -> no_usar"
+    reintentable: false
+  - ts: '2026-09-15 11:30'
     tipo: descartado
     proveedor: openrouter
     model: google/lyria-3-clip-preview
-    motivo: "502 del proveedor: es de musica, no de chat. No sirve como escalon"
+    motivo: "CORREGIDO: no fue '502 del proveedor' por estar caido. El 502 sale de pedirle CHAT (no es un modelo de conversacion). Pidiendole audio devuelve HTTP 402: exige $0.50 de saldo. Es de musica, no de chat, y no es gratis"
     reintentable: false
+    nota: "Reemplaza el motivo anterior, que atribuia el 502 a una caida del proveedor. Detalle completo en modelos-otros.yaml -> no_usar"
