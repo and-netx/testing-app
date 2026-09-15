@@ -79,8 +79,8 @@ modelos:
   - name: groq-qwen-qwen3-8-27b
     proveedor: groq
     model: qwen/qwen3.8-27b
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 131042
     apto_hasta_tokens: 117937
     timeout_s: 6
@@ -92,8 +92,8 @@ modelos:
   - name: groq-openai-gpt-oss-20b
     proveedor: groq
     model: openai/gpt-oss-20b
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 131072
     apto_hasta_tokens: 117964
     timeout_s: 6
@@ -105,8 +105,8 @@ modelos:
   - name: groq-openai-gpt-oss-120b
     proveedor: groq
     model: openai/gpt-oss-120b
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 131072
     apto_hasta_tokens: 117964
     timeout_s: 6
@@ -118,8 +118,8 @@ modelos:
   - name: groq-allam-2-7b
     proveedor: groq
     model: allam-2-7b
-    tools: False
-    vision: False
+    tools: false
+    vision: false
     ventana_tokens: 4096
     apto_hasta_tokens: 3096
     timeout_s: 6
@@ -131,8 +131,8 @@ modelos:
   - name: openrouter-cohere-north-mini-code-free
     proveedor: openrouter
     model: cohere/north-mini-code:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 256000
     apto_hasta_tokens: 230400
     timeout_s: 6
@@ -144,8 +144,8 @@ modelos:
   - name: openrouter-nvidia-nemotron-3-5-content-safety-free
     proveedor: openrouter
     model: nvidia/nemotron-3.5-content-safety:free
-    tools: False
-    vision: True
+    tools: false
+    vision: true
     ventana_tokens: 128000
     apto_hasta_tokens: 115200
     timeout_s: 6
@@ -157,8 +157,8 @@ modelos:
   - name: openrouter-nvidia-nemotron-3-5-lightning-free
     proveedor: openrouter
     model: nvidia/nemotron-3.5-lightning:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 1000000
     apto_hasta_tokens: 900000
     timeout_s: 6
@@ -170,8 +170,8 @@ modelos:
   - name: openrouter-nvidia-nemotron-3-super-120b-a12b-free
     proveedor: openrouter
     model: nvidia/nemotron-3-super-120b-a12b:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -183,8 +183,8 @@ modelos:
   - name: openrouter-openrouter-free
     proveedor: openrouter
     model: openrouter/free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 200000
     apto_hasta_tokens: 180000
     timeout_s: 6
@@ -196,8 +196,8 @@ modelos:
   - name: groq-groq-compound
     proveedor: groq
     model: groq/compound
-    tools: None
-    vision: None
+    tools: null
+    vision: null
     ventana_tokens: 131072
     apto_hasta_tokens: 117964
     timeout_s: 6
@@ -209,8 +209,8 @@ modelos:
   - name: openrouter-nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free
     proveedor: openrouter
     model: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 256000
     apto_hasta_tokens: 230400
     timeout_s: 6
@@ -222,8 +222,8 @@ modelos:
   - name: groq-groq-compound-mini
     proveedor: groq
     model: groq/compound-mini
-    tools: None
-    vision: None
+    tools: null
+    vision: null
     ventana_tokens: 131072
     apto_hasta_tokens: 117964
     timeout_s: 6
@@ -235,8 +235,8 @@ modelos:
   - name: openrouter-inclusionai-ling-3-0-flash-fin-free
     proveedor: openrouter
     model: inclusionai/ling-3.0-flash-fin:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -248,8 +248,8 @@ modelos:
   - name: openrouter-inclusionai-ling-3-0-flash-vl-free
     proveedor: openrouter
     model: inclusionai/ling-3.0-flash-vl:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -261,8 +261,8 @@ modelos:
   - name: openrouter-google-lyria-3-pro-preview
     proveedor: openrouter
     model: google/lyria-3-pro-preview
-    tools: False
-    vision: True
+    tools: false
+    vision: true
     ventana_tokens: 1048576
     apto_hasta_tokens: 943718
     timeout_s: 6
@@ -274,8 +274,8 @@ modelos:
   - name: openrouter-poolside-laguna-s-2-1-free
     proveedor: openrouter
     model: poolside/laguna-s-2.1:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -287,8 +287,8 @@ modelos:
   - name: openrouter-inclusionai-ling-3-0-flash-sante-free
     proveedor: openrouter
     model: inclusionai/ling-3.0-flash-sante:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -300,8 +300,8 @@ modelos:
   - name: openrouter-nex-agi-nex-n2-5-mini-free
     proveedor: openrouter
     model: nex-agi/nex-n2.5-mini:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -313,34 +313,34 @@ modelos:
   - name: bai-qwen3-8-flash
     proveedor: bai
     model: qwen3.8-flash
-    tools: None
-    vision: None
+    tools: null
+    vision: null
     ventana_tokens: 128000
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 2.4
     verificado_ts: "2026-09-10 18:53"
     costo_estado: "desconocido"
-    costo_in_millon: None
-    costo_out_millon: None
+    costo_in_millon: null
+    costo_out_millon: null
   - name: bai-hy3
     proveedor: bai
     model: hy3
-    tools: None
-    vision: None
+    tools: null
+    vision: null
     ventana_tokens: 128000
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 2.5
     verificado_ts: "2026-09-10 18:53"
     costo_estado: "desconocido"
-    costo_in_millon: None
-    costo_out_millon: None
+    costo_in_millon: null
+    costo_out_millon: null
   - name: openrouter-dots-studio-dots-3-note-preview-free
     proveedor: openrouter
     model: dots-studio/dots-3-note-preview:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 512000
     apto_hasta_tokens: 460800
     timeout_s: 6
@@ -352,8 +352,8 @@ modelos:
   - name: openrouter-liquid-lfm-2-5-2-6b-free
     proveedor: openrouter
     model: liquid/lfm-2.5-2.6b:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 65536
     apto_hasta_tokens: 58982
     timeout_s: 6
@@ -365,8 +365,8 @@ modelos:
   - name: openrouter-nex-agi-nex-n2-5-pro-free
     proveedor: openrouter
     model: nex-agi/nex-n2.5-pro:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -378,8 +378,8 @@ modelos:
   - name: openrouter-nvidia-nemotron-3-ultra-550b-a55b-free
     proveedor: openrouter
     model: nvidia/nemotron-3-ultra-550b-a55b:free
-    tools: True
-    vision: False
+    tools: true
+    vision: false
     ventana_tokens: 1000000
     apto_hasta_tokens: 900000
     timeout_s: 6
@@ -391,26 +391,26 @@ modelos:
   - name: bai-mimo-v2-5
     proveedor: bai
     model: mimo-v2.5
-    tools: None
-    vision: None
+    tools: null
+    vision: null
     ventana_tokens: 128000
     apto_hasta_tokens: 115200
     timeout_s: 6
     latencia_s: 22.1
     verificado_ts: "2026-09-10 18:53"
     costo_estado: "desconocido"
-    costo_in_millon: None
-    costo_out_millon: None
+    costo_in_millon: null
+    costo_out_millon: null
   - name: deepseek-flash
     proveedor: deepseek
     model: deepseek-flash
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 1000000
     apto_hasta_tokens: 900000
     timeout_s: 45
-    latencia_s: None
-    verificado_ts: None
+    latencia_s: null
+    verificado_ts: null
     costo_estado: "pago"
     costo_in_millon: 0.15
     costo_out_millon: 0.6
@@ -423,8 +423,8 @@ modelos:
   - name: openrouter-google-gemma-4-26b-a4b-it-free
     proveedor: openrouter
     model: google/gemma-4-26b-a4b-it:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
@@ -436,8 +436,8 @@ modelos:
   - name: openrouter-google-gemma-4-31b-it-free
     proveedor: openrouter
     model: google/gemma-4-31b-it:free
-    tools: True
-    vision: True
+    tools: true
+    vision: true
     ventana_tokens: 262144
     apto_hasta_tokens: 235929
     timeout_s: 6
